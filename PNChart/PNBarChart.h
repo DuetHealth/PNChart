@@ -54,6 +54,12 @@ typedef NSString *(^PNYLabelFormatter)(CGFloat yLabelValue);
 /** Controls whether the chart border line should be displayed. */
 @property (nonatomic) BOOL showChartBorder;
 
+/** Controls whether the chart border ticks should be displayed. */
+@property (nonatomic) BOOL showChartTicks;
+
+/** Controls whether the chart horizontal guides should be displayed. */
+@property (nonatomic) BOOL showHorizontalGuidlines;
+
 /** Chart bottom border, co-linear with the x-axis. */
 @property (nonatomic) CAShapeLayer * chartBottomLine;
 

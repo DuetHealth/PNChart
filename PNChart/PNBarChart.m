@@ -35,11 +35,11 @@
 - (id)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
-
+    
     if (self) {
         [self setupDefaultValues];
     }
-
+    
     return self;
 }
 
@@ -59,19 +59,21 @@
     _labelMarginTop      = 0;
     _chartMargin         = 15.0;
     _barRadius           = 2.0;
-    _showChartBorder     = NO;
     _yChartLabelWidth    = 18;
-    _rotateForXAxisText  = false;
+    _showChartBorder     = NO;
+    _rotateForXAxisText  = NO;
+    _showChartTicks      = NO;
+    _showHorizontalGuidlines = NO;
 }
 
 - (void)setYValues:(NSArray *)yValues
 {
     _yValues = yValues;
-
+    
     //make the _yLabelSum value dependant of the distinct values of yValues to avoid duplicates on yAxis
     int yLabelsDifTotal = (int)[NSSet setWithArray:yValues].count;
     _yLabelSum = yLabelsDifTotal % 2 == 0 ? yLabelsDifTotal : yLabelsDifTotal + 1;
-
+    
     if (_yMaxValue) {
         _yValueMax = _yMaxValue;
     } else {
@@ -91,8 +93,7 @@
         
         for (int index = 0; index < _yLabelSum; index++) {
             
-            NSString *labelText = _yLabelFormatter((float)_yValueMax * ( (_yLabelSum - index) / (float)_yLabelSum ));
-            
+            NSString* labelText = _yLabels[index];
             PNChartLabel * label = [[PNChartLabel alloc] initWithFrame:CGRectMake(0,
                                                                                   yLabelSectionHeight * index + _chartMargin - kYLabelHeight/2.0,
                                                                                   _yChartLabelWidth,
@@ -104,7 +105,6 @@
             
             [_yChartLabels addObject:label];
             [self addSubview:label];
-            
         }
     }
 }
@@ -117,10 +117,10 @@
 - (void)getYValueMax:(NSArray *)yLabels
 {
     int max = [[yLabels valueForKeyPath:@"@max.intValue"] intValue];
-
+    
     //ensure max is even
     _yValueMax = max % 2 == 0 ? max : max + 1;
-
+    
     if (_yValueMax == 0) {
         _yValueMax = _yMinValue;
     }
@@ -251,78 +251,175 @@
 - (void)strokeChart
 {
     //Add Labels
-
+    
     [self viewCleanupForCollection:_bars];
-
-
+    
+    
     //Update Bar
     
     [self updateBar];
     
     //Add chart border lines
-
+    
     if (_showChartBorder) {
         _chartBottomLine = [CAShapeLayer layer];
         _chartBottomLine.lineCap      = kCALineCapButt;
         _chartBottomLine.fillColor    = [[UIColor whiteColor] CGColor];
         _chartBottomLine.lineWidth    = 1.0;
         _chartBottomLine.strokeEnd    = 0.0;
-
+        
         UIBezierPath *progressline = [UIBezierPath bezierPath];
-
-        [progressline moveToPoint:CGPointMake(_chartMargin, self.frame.size.height - kXLabelHeight - _chartMargin)];
+        
+        [progressline moveToPoint:CGPointMake(_chartMargin + 10, self.frame.size.height - kXLabelHeight - _chartMargin)];
         [progressline addLineToPoint:CGPointMake(self.frame.size.width - _chartMargin,  self.frame.size.height - kXLabelHeight - _chartMargin)];
-
+        
         [progressline setLineWidth:1.0];
         [progressline setLineCapStyle:kCGLineCapSquare];
         _chartBottomLine.path = progressline.CGPath;
-
-
-        _chartBottomLine.strokeColor = PNLightGrey.CGColor;
-
-
+        
+        
+        _chartBottomLine.strokeColor = PNBlack.CGColor;
+        
+        
         CABasicAnimation *pathAnimation = [CABasicAnimation animationWithKeyPath:@"strokeEnd"];
         pathAnimation.duration = 0.5;
         pathAnimation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
         pathAnimation.fromValue = @0.0f;
         pathAnimation.toValue = @1.0f;
         [_chartBottomLine addAnimation:pathAnimation forKey:@"strokeEndAnimation"];
-
+        
         _chartBottomLine.strokeEnd = 1.0;
-
+        
         [self.layer addSublayer:_chartBottomLine];
-
+        
         //Add left Chart Line
-
+        
         _chartLeftLine = [CAShapeLayer layer];
         _chartLeftLine.lineCap      = kCALineCapButt;
         _chartLeftLine.fillColor    = [[UIColor whiteColor] CGColor];
         _chartLeftLine.lineWidth    = 1.0;
         _chartLeftLine.strokeEnd    = 0.0;
-
+        
         UIBezierPath *progressLeftline = [UIBezierPath bezierPath];
-
-        [progressLeftline moveToPoint:CGPointMake(_chartMargin, self.frame.size.height - kXLabelHeight - _chartMargin)];
-        [progressLeftline addLineToPoint:CGPointMake(_chartMargin,  _chartMargin)];
-
+        
+        [progressLeftline moveToPoint:CGPointMake(_chartMargin + 10, self.frame.size.height - kXLabelHeight - _chartMargin)];
+        [progressLeftline addLineToPoint:CGPointMake(_chartMargin + 10,  _chartMargin)];
+        
         [progressLeftline setLineWidth:1.0];
         [progressLeftline setLineCapStyle:kCGLineCapSquare];
+        
         _chartLeftLine.path = progressLeftline.CGPath;
-
-
-        _chartLeftLine.strokeColor = PNLightGrey.CGColor;
-
-
+        _chartLeftLine.strokeColor = PNBlack.CGColor;
+        
+        
         CABasicAnimation *pathLeftAnimation = [CABasicAnimation animationWithKeyPath:@"strokeEnd"];
         pathLeftAnimation.duration = 0.5;
         pathLeftAnimation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
         pathLeftAnimation.fromValue = @0.0f;
         pathLeftAnimation.toValue = @1.0f;
         [_chartLeftLine addAnimation:pathLeftAnimation forKey:@"strokeEndAnimation"];
-
+        
         _chartLeftLine.strokeEnd = 1.0;
-
+        
         [self.layer addSublayer:_chartLeftLine];
+    }
+    
+    if (_showChartTicks) {
+        // y ticks
+        for (UILabel* yLabel in _yChartLabels) {
+            CAShapeLayer *tickLayer = [CAShapeLayer layer];
+            tickLayer.lineCap      = kCALineCapButt;
+            tickLayer.fillColor    = [[UIColor whiteColor] CGColor];
+            tickLayer.lineWidth    = 1.0;
+            tickLayer.strokeEnd    = 0.0;
+            
+            UIBezierPath *tickLine = [UIBezierPath bezierPath];
+            [tickLine moveToPoint:CGPointMake(_chartMargin + 10, yLabel.center.y)];
+            [tickLine addLineToPoint:CGPointMake(_chartMargin + 15, yLabel.center.y)];
+            [tickLine setLineWidth:1.0];
+            [tickLine setLineCapStyle:kCGLineCapSquare];
+            
+            tickLayer.path = tickLine.CGPath;
+            tickLayer.strokeColor = PNBlack.CGColor;
+            
+            CABasicAnimation *pathLeftAnimation = [CABasicAnimation animationWithKeyPath:@"strokeEnd"];
+            pathLeftAnimation.duration = 0.5;
+            pathLeftAnimation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
+            pathLeftAnimation.fromValue = @0.0f;
+            pathLeftAnimation.toValue = @1.0f;
+            [tickLayer addAnimation:pathLeftAnimation forKey:@"strokeEndAnimation"];
+            
+            tickLayer.strokeEnd = 1.0;
+            
+            [self.layer addSublayer:tickLayer];
+        }
+        
+        // x ticks
+        for (UILabel* xLabel in _xChartLabels) {
+            CAShapeLayer *tickLayer = [CAShapeLayer layer];
+            tickLayer.lineCap      = kCALineCapButt;
+            tickLayer.fillColor    = [[UIColor whiteColor] CGColor];
+            tickLayer.lineWidth    = 1.0;
+            tickLayer.strokeEnd    = 0.0;
+            
+            UIBezierPath *tickLine = [UIBezierPath bezierPath];
+            CGFloat yStart = self.frame.size.height - kXLabelHeight - _chartMargin;
+            [tickLine moveToPoint:CGPointMake(xLabel.center.x, yStart)];
+            [tickLine addLineToPoint:CGPointMake(xLabel.center.x, yStart - 5)];
+            [tickLine setLineWidth:1.0];
+            [tickLine setLineCapStyle:kCGLineCapSquare];
+            
+            tickLayer.path = tickLine.CGPath;
+            tickLayer.strokeColor = PNBlack.CGColor;
+            
+            CABasicAnimation *pathLeftAnimation = [CABasicAnimation animationWithKeyPath:@"strokeEnd"];
+            pathLeftAnimation.duration = 0.5;
+            pathLeftAnimation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
+            pathLeftAnimation.fromValue = @0.0f;
+            pathLeftAnimation.toValue = @1.0f;
+            [tickLayer addAnimation:pathLeftAnimation forKey:@"strokeEndAnimation"];
+            
+            tickLayer.strokeEnd = 1.0;
+            
+            [self.layer addSublayer:tickLayer];
+        }
+    }
+    
+    if (_showHorizontalGuidlines) {
+        for (UILabel* yLabel in _yChartLabels) {
+            
+            CGFloat dashWidth = 5.0;
+            CGFloat width = self.frame.size.width - _chartMargin + 10;
+            NSInteger numTicks = (NSInteger)(width / dashWidth);
+            for (NSInteger i = 0; i < numTicks - 1; i += 2) {
+                CAShapeLayer *tickLayer = [CAShapeLayer layer];
+                tickLayer.lineCap      = kCALineCapButt;
+                tickLayer.fillColor    = [[UIColor whiteColor] CGColor];
+                tickLayer.lineWidth    = 1.0;
+                tickLayer.strokeEnd    = 0.0;
+                
+                UIBezierPath *tickLine = [UIBezierPath bezierPath];
+                CGFloat startY = _chartMargin + 10 + i * width;
+                [tickLine moveToPoint:CGPointMake(startY, yLabel.center.y)];
+                [tickLine addLineToPoint:CGPointMake(startY + width, yLabel.center.y)];
+                [tickLine setLineWidth:1.0];
+                [tickLine setLineCapStyle:kCGLineCapSquare];
+                
+                tickLayer.path = tickLine.CGPath;
+                tickLayer.strokeColor = PNBlack.CGColor;
+                
+                CABasicAnimation *pathLeftAnimation = [CABasicAnimation animationWithKeyPath:@"strokeEnd"];
+                pathLeftAnimation.duration = 0.5;
+                pathLeftAnimation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
+                pathLeftAnimation.fromValue = @0.0f;
+                pathLeftAnimation.toValue = @1.0f;
+                [tickLayer addAnimation:pathLeftAnimation forKey:@"strokeEndAnimation"];
+                
+                tickLayer.strokeEnd = 1.0;
+                
+                [self.layer addSublayer:tickLayer];
+            }
+        }
     }
 }
 
@@ -364,7 +461,7 @@
     UITouch *touch = [touches anyObject];
     CGPoint touchPoint = [touch locationInView:self];
     UIView *subview = [self hitTest:touchPoint withEvent:nil];
-
+    
     if ([subview isKindOfClass:[PNBar class]] && [self.delegate respondsToSelector:@selector(userClickedOnBarAtIndex:)]) {
         [self.delegate userClickedOnBarAtIndex:subview.tag];
     }
@@ -372,3 +469,4 @@
 
 
 @end
+
