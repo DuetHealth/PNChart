@@ -251,12 +251,9 @@
 - (void)strokeChart
 {
     //Add Labels
-    
     [self viewCleanupForCollection:_bars];
     
-    
     //Update Bar
-    
     [self updateBar];
     
     //Add chart border lines
@@ -387,9 +384,8 @@
     
     if (_showHorizontalGuidlines) {
         for (UILabel* yLabel in _yChartLabels) {
-            
-            CGFloat dashWidth = 5.0;
-            CGFloat width = self.frame.size.width - _chartMargin + 10;
+            CGFloat dashWidth = 3.0;
+            CGFloat width = self.frame.size.width - _chartMargin - 30;
             NSInteger numTicks = (NSInteger)(width / dashWidth);
             for (NSInteger i = 0; i < numTicks - 1; i += 2) {
                 CAShapeLayer *tickLayer = [CAShapeLayer layer];
@@ -399,14 +395,14 @@
                 tickLayer.strokeEnd    = 0.0;
                 
                 UIBezierPath *tickLine = [UIBezierPath bezierPath];
-                CGFloat startY = _chartMargin + 10 + i * width;
-                [tickLine moveToPoint:CGPointMake(startY, yLabel.center.y)];
-                [tickLine addLineToPoint:CGPointMake(startY + width, yLabel.center.y)];
+                CGFloat startX = _chartMargin + 10 + i * dashWidth;
+                [tickLine moveToPoint:CGPointMake(startX, yLabel.center.y)];
+                [tickLine addLineToPoint:CGPointMake(startX + dashWidth, yLabel.center.y)];
                 [tickLine setLineWidth:1.0];
                 [tickLine setLineCapStyle:kCGLineCapSquare];
                 
                 tickLayer.path = tickLine.CGPath;
-                tickLayer.strokeColor = PNBlack.CGColor;
+                tickLayer.strokeColor = [UIColor lightGrayColor].CGColor;
                 
                 CABasicAnimation *pathLeftAnimation = [CABasicAnimation animationWithKeyPath:@"strokeEnd"];
                 pathLeftAnimation.duration = 0.5;
