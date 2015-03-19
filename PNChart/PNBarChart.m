@@ -66,6 +66,10 @@
     _showHorizontalGuidlines = NO;
 }
 
+- (void)setHorizontalValues:(NSArray *)horizontalValues {
+    _horizontalValues = horizontalValues;
+}
+
 - (void)setYValues:(NSArray *)yValues
 {
     _yValues = yValues;
@@ -383,6 +387,7 @@
     }
     
     if (_showHorizontalGuidlines) {
+        
         for (UILabel* yLabel in _yChartLabels) {
             CGFloat dashWidth = 3.0;
             CGFloat width = self.frame.size.width - _chartMargin - 30;
@@ -416,6 +421,35 @@
                 [self.layer addSublayer:tickLayer];
             }
         }
+    }
+    
+    for (NSNumber* value in _horizontalValues) {
+        CGFloat y =  ((_yMaxValue - value.floatValue) / _yMaxValue) * (self.frame.size.height + _chartMargin * 2);
+        
+        UIColor* horizontalColor = [[UIColor grayColor] colorWithAlphaComponent:0.5];
+        
+        CAShapeLayer *tickLayer = [CAShapeLayer layer];
+        tickLayer.lineCap      = kCALineCapButt;
+        tickLayer.fillColor    = horizontalColor.CGColor;
+        tickLayer.lineWidth    = 1.0;
+        tickLayer.strokeEnd    = 0.0;
+        
+        CGFloat startX = _chartMargin + 10;
+        CGFloat endX = self.frame.size.width - _chartMargin - startX;
+        UIBezierPath* tickLine = [UIBezierPath bezierPathWithRect:CGRectMake(startX, y - 1, endX, 5)];
+        tickLayer.path = tickLine.CGPath;
+        
+        CABasicAnimation *pathLeftAnimation = [CABasicAnimation animationWithKeyPath:@"strokeEnd"];
+        pathLeftAnimation.duration = 0.5;
+        pathLeftAnimation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
+        pathLeftAnimation.fromValue = @0.0f;
+        pathLeftAnimation.toValue = @1.0f;
+        [tickLayer addAnimation:pathLeftAnimation forKey:@"strokeEndAnimation"];
+        
+        tickLayer.strokeEnd = 1.0;
+        
+        [self.layer addSublayer:tickLayer];
+        
     }
 }
 
