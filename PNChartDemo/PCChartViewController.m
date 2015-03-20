@@ -108,6 +108,12 @@
         // Adding gradient
         self.barChart.barColorGradientStart = [UIColor blueColor];
         
+        // dh customization
+        self.barChart.showChartTicks = YES;
+        self.barChart.showHorizontalGuidlines = YES;
+        self.barChart.showChartBorder = YES;
+        [self.barChart setHorizontalValues:@[@12]];
+        
         [self.barChart strokeChart];
         
         self.barChart.delegate = self;

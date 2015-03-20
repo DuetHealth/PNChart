@@ -389,42 +389,40 @@
     if (_showHorizontalGuidlines) {
         for (UILabel* yLabel in _yChartLabels) {
             CGFloat dashWidth = 3.0;
-            CGFloat width = self.frame.size.width - _chartMargin - 30;
-            NSInteger numTicks = (NSInteger)(width / dashWidth);
-            for (NSInteger i = 0; i < numTicks - 1; i += 2) {
-                CAShapeLayer *tickLayer = [CAShapeLayer layer];
-                tickLayer.lineCap      = kCALineCapButt;
-                tickLayer.fillColor    = [[UIColor whiteColor] CGColor];
-                tickLayer.lineWidth    = 1.0;
-                tickLayer.strokeEnd    = 0.0;
-                
-                UIBezierPath *tickLine = [UIBezierPath bezierPath];
-                CGFloat startX = _chartMargin + 10 + i * dashWidth;
-                [tickLine moveToPoint:CGPointMake(startX, yLabel.center.y)];
-                [tickLine addLineToPoint:CGPointMake(startX + dashWidth, yLabel.center.y)];
-                [tickLine setLineWidth:1.0];
-                [tickLine setLineCapStyle:kCGLineCapSquare];
-                
-                tickLayer.path = tickLine.CGPath;
-                tickLayer.strokeColor = [UIColor lightGrayColor].CGColor;
-                
-                CABasicAnimation *pathLeftAnimation = [CABasicAnimation animationWithKeyPath:@"strokeEnd"];
-                pathLeftAnimation.duration = 0.5;
-                pathLeftAnimation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
-                pathLeftAnimation.fromValue = @0.0f;
-                pathLeftAnimation.toValue = @1.0f;
-                [tickLayer addAnimation:pathLeftAnimation forKey:@"strokeEndAnimation"];
-                
-                tickLayer.strokeEnd = 1.0;
-                
-                [self.layer addSublayer:tickLayer];
-            }
+            CAShapeLayer *tickLayer = [CAShapeLayer layer];
+            [tickLayer setLineDashPattern:@[@(dashWidth), @(dashWidth)]];
+            tickLayer.lineCap      = kCALineCapButt;
+            tickLayer.fillColor    = [[UIColor whiteColor] CGColor];
+            tickLayer.lineWidth    = 1.0;
+            tickLayer.strokeEnd    = 0.0;
+            
+            UIBezierPath *tickLine = [UIBezierPath bezierPath];
+            CGFloat startX = _chartMargin + 12;
+            CGFloat endX = self.frame.size.width - _chartMargin;
+            [tickLine moveToPoint:CGPointMake(startX, yLabel.center.y)];
+            [tickLine addLineToPoint:CGPointMake(endX, yLabel.center.y)];
+            [tickLine setLineWidth:1.0];
+            [tickLine setLineCapStyle:kCGLineCapSquare];
+            
+            tickLayer.path = tickLine.CGPath;
+            tickLayer.strokeColor = [UIColor lightGrayColor].CGColor;
+            
+            CABasicAnimation *pathLeftAnimation = [CABasicAnimation animationWithKeyPath:@"strokeEnd"];
+            pathLeftAnimation.duration = 0.5;
+            pathLeftAnimation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
+            pathLeftAnimation.fromValue = @0.0f;
+            pathLeftAnimation.toValue = @1.0f;
+            [tickLayer addAnimation:pathLeftAnimation forKey:@"strokeEndAnimation"];
+            
+            tickLayer.strokeEnd = 1.0;
+            
+            [self.layer addSublayer:tickLayer];
         }
     }
     
     for (NSNumber* value in _horizontalValues) {
         CGFloat height = self.frame.size.height - (_chartMargin * 2) - kXLabelHeight;
-        CGFloat y =  ((_yMaxValue - value.floatValue) / _yMaxValue) * height + kYLabelMargin;
+        CGFloat y =  ((_yValueMax - value.floatValue) / _yValueMax) * height + kYLabelMargin;
         
         UIColor* horizontalColor = [[UIColor grayColor] colorWithAlphaComponent:0.5];
         
@@ -435,8 +433,8 @@
         tickLayer.strokeEnd    = 0.0;
         
         CGFloat startX = _chartMargin + 10;
-        CGFloat endX = self.frame.size.width - _chartMargin - startX;
-        UIBezierPath* tickLine = [UIBezierPath bezierPathWithRect:CGRectMake(startX, y - 3, endX, 6)];
+        CGFloat width = self.frame.size.width - _chartMargin - startX;
+        UIBezierPath* tickLine = [UIBezierPath bezierPathWithRect:CGRectMake(startX, y - 3, width, 6)];
         tickLayer.path = tickLine.CGPath;
         
         CABasicAnimation *pathLeftAnimation = [CABasicAnimation animationWithKeyPath:@"strokeEnd"];
