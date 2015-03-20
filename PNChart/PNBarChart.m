@@ -387,7 +387,6 @@
     }
     
     if (_showHorizontalGuidlines) {
-        
         for (UILabel* yLabel in _yChartLabels) {
             CGFloat dashWidth = 3.0;
             CGFloat width = self.frame.size.width - _chartMargin - 30;
@@ -424,7 +423,8 @@
     }
     
     for (NSNumber* value in _horizontalValues) {
-        CGFloat y =  ((_yMaxValue - value.floatValue) / _yMaxValue) * (self.frame.size.height + _chartMargin * 2);
+        CGFloat height = self.frame.size.height - (_chartMargin * 2) - kXLabelHeight;
+        CGFloat y =  ((_yMaxValue - value.floatValue) / _yMaxValue) * height + kYLabelMargin;
         
         UIColor* horizontalColor = [[UIColor grayColor] colorWithAlphaComponent:0.5];
         
@@ -436,7 +436,7 @@
         
         CGFloat startX = _chartMargin + 10;
         CGFloat endX = self.frame.size.width - _chartMargin - startX;
-        UIBezierPath* tickLine = [UIBezierPath bezierPathWithRect:CGRectMake(startX, y - 1, endX, 5)];
+        UIBezierPath* tickLine = [UIBezierPath bezierPathWithRect:CGRectMake(startX, y - 3, endX, 6)];
         tickLayer.path = tickLine.CGPath;
         
         CABasicAnimation *pathLeftAnimation = [CABasicAnimation animationWithKeyPath:@"strokeEnd"];
@@ -449,7 +449,6 @@
         tickLayer.strokeEnd = 1.0;
         
         [self.layer addSublayer:tickLayer];
-        
     }
 }
 
@@ -499,4 +498,3 @@
 
 
 @end
-
