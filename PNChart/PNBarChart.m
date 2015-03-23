@@ -92,6 +92,7 @@
     
     if (_showLabel) {
         //Add y labels
+        _yLabelSum = _yLabels.count;
         
         float yLabelSectionHeight = (self.frame.size.height - _chartMargin * 2 - kXLabelHeight) / _yLabelSum;
         
