@@ -284,7 +284,7 @@
         
         
         CABasicAnimation *pathAnimation = [CABasicAnimation animationWithKeyPath:@"strokeEnd"];
-        pathAnimation.duration = 0.5;
+        pathAnimation.duration = 0.0;
         pathAnimation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
         pathAnimation.fromValue = @0.0f;
         pathAnimation.toValue = @1.0f;
@@ -315,7 +315,7 @@
         
         
         CABasicAnimation *pathLeftAnimation = [CABasicAnimation animationWithKeyPath:@"strokeEnd"];
-        pathLeftAnimation.duration = 0.5;
+        pathLeftAnimation.duration = 0.0;
         pathLeftAnimation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
         pathLeftAnimation.fromValue = @0.0f;
         pathLeftAnimation.toValue = @1.0f;
@@ -345,7 +345,7 @@
             tickLayer.strokeColor = PNBlack.CGColor;
             
             CABasicAnimation *pathLeftAnimation = [CABasicAnimation animationWithKeyPath:@"strokeEnd"];
-            pathLeftAnimation.duration = 0.5;
+            pathLeftAnimation.duration = 0.0;
             pathLeftAnimation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
             pathLeftAnimation.fromValue = @0.0f;
             pathLeftAnimation.toValue = @1.0f;
@@ -375,7 +375,7 @@
             tickLayer.strokeColor = PNBlack.CGColor;
             
             CABasicAnimation *pathLeftAnimation = [CABasicAnimation animationWithKeyPath:@"strokeEnd"];
-            pathLeftAnimation.duration = 0.5;
+            pathLeftAnimation.duration = 0.0;
             pathLeftAnimation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
             pathLeftAnimation.fromValue = @0.0f;
             pathLeftAnimation.toValue = @1.0f;
@@ -409,7 +409,7 @@
             tickLayer.strokeColor = [UIColor lightGrayColor].CGColor;
             
             CABasicAnimation *pathLeftAnimation = [CABasicAnimation animationWithKeyPath:@"strokeEnd"];
-            pathLeftAnimation.duration = 0.5;
+            pathLeftAnimation.duration = 0.0;
             pathLeftAnimation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
             pathLeftAnimation.fromValue = @0.0f;
             pathLeftAnimation.toValue = @1.0f;
