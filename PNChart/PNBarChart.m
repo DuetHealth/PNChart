@@ -283,13 +283,14 @@
         _chartBottomLine.strokeColor = PNBlack.CGColor;
         
         
-        CABasicAnimation *pathAnimation = [CABasicAnimation animationWithKeyPath:@"strokeEnd"];
-        pathAnimation.duration = 0.0;
-        pathAnimation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
-        pathAnimation.fromValue = @0.0f;
-        pathAnimation.toValue = @1.0f;
-        [_chartBottomLine addAnimation:pathAnimation forKey:@"strokeEndAnimation"];
-        
+        /*
+         CABasicAnimation *pathAnimation = [CABasicAnimation animationWithKeyPath:@"strokeEnd"];
+         pathAnimation.duration = 0.5;
+         pathAnimation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
+         pathAnimation.fromValue = @0.0f;
+         pathAnimation.toValue = @1.0f;
+         [_chartBottomLine addAnimation:pathAnimation forKey:@"strokeEndAnimation"];
+         */
         _chartBottomLine.strokeEnd = 1.0;
         
         [self.layer addSublayer:_chartBottomLine];
@@ -313,13 +314,14 @@
         _chartLeftLine.path = progressLeftline.CGPath;
         _chartLeftLine.strokeColor = PNBlack.CGColor;
         
-        
-        CABasicAnimation *pathLeftAnimation = [CABasicAnimation animationWithKeyPath:@"strokeEnd"];
-        pathLeftAnimation.duration = 0.0;
-        pathLeftAnimation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
-        pathLeftAnimation.fromValue = @0.0f;
-        pathLeftAnimation.toValue = @1.0f;
-        [_chartLeftLine addAnimation:pathLeftAnimation forKey:@"strokeEndAnimation"];
+        /*
+         CABasicAnimation *pathLeftAnimation = [CABasicAnimation animationWithKeyPath:@"strokeEnd"];
+         pathLeftAnimation.duration = 0.5;
+         pathLeftAnimation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
+         pathLeftAnimation.fromValue = @0.0f;
+         pathLeftAnimation.toValue = @1.0f;
+         [_chartLeftLine addAnimation:pathLeftAnimation forKey:@"strokeEndAnimation"];
+         */
         
         _chartLeftLine.strokeEnd = 1.0;
         
@@ -344,12 +346,14 @@
             tickLayer.path = tickLine.CGPath;
             tickLayer.strokeColor = PNBlack.CGColor;
             
-            CABasicAnimation *pathLeftAnimation = [CABasicAnimation animationWithKeyPath:@"strokeEnd"];
-            pathLeftAnimation.duration = 0.0;
-            pathLeftAnimation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
-            pathLeftAnimation.fromValue = @0.0f;
-            pathLeftAnimation.toValue = @1.0f;
-            [tickLayer addAnimation:pathLeftAnimation forKey:@"strokeEndAnimation"];
+            /*
+             CABasicAnimation *pathLeftAnimation = [CABasicAnimation animationWithKeyPath:@"strokeEnd"];
+             pathLeftAnimation.duration = 0.5;
+             pathLeftAnimation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
+             pathLeftAnimation.fromValue = @0.0f;
+             pathLeftAnimation.toValue = @1.0f;
+             [tickLayer addAnimation:pathLeftAnimation forKey:@"strokeEndAnimation"];
+             */
             
             tickLayer.strokeEnd = 1.0;
             
@@ -374,12 +378,14 @@
             tickLayer.path = tickLine.CGPath;
             tickLayer.strokeColor = PNBlack.CGColor;
             
-            CABasicAnimation *pathLeftAnimation = [CABasicAnimation animationWithKeyPath:@"strokeEnd"];
-            pathLeftAnimation.duration = 0.0;
-            pathLeftAnimation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
-            pathLeftAnimation.fromValue = @0.0f;
-            pathLeftAnimation.toValue = @1.0f;
-            [tickLayer addAnimation:pathLeftAnimation forKey:@"strokeEndAnimation"];
+            /*
+             CABasicAnimation *pathLeftAnimation = [CABasicAnimation animationWithKeyPath:@"strokeEnd"];
+             pathLeftAnimation.duration = 0.5;
+             pathLeftAnimation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
+             pathLeftAnimation.fromValue = @0.0f;
+             pathLeftAnimation.toValue = @1.0f;
+             [tickLayer addAnimation:pathLeftAnimation forKey:@"strokeEndAnimation"];
+             */
             
             tickLayer.strokeEnd = 1.0;
             
@@ -408,12 +414,14 @@
             tickLayer.path = tickLine.CGPath;
             tickLayer.strokeColor = [UIColor lightGrayColor].CGColor;
             
-            CABasicAnimation *pathLeftAnimation = [CABasicAnimation animationWithKeyPath:@"strokeEnd"];
-            pathLeftAnimation.duration = 0.0;
-            pathLeftAnimation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
-            pathLeftAnimation.fromValue = @0.0f;
-            pathLeftAnimation.toValue = @1.0f;
-            [tickLayer addAnimation:pathLeftAnimation forKey:@"strokeEndAnimation"];
+            /*
+             CABasicAnimation *pathLeftAnimation = [CABasicAnimation animationWithKeyPath:@"strokeEnd"];
+             pathLeftAnimation.duration = 0.5;
+             pathLeftAnimation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
+             pathLeftAnimation.fromValue = @0.0f;
+             pathLeftAnimation.toValue = @1.0f;
+             [tickLayer addAnimation:pathLeftAnimation forKey:@"strokeEndAnimation"];
+             */
             
             tickLayer.strokeEnd = 1.0;
             
