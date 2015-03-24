@@ -76,7 +76,7 @@
     
     //make the _yLabelSum value dependant of the distinct values of yValues to avoid duplicates on yAxis
     int yLabelsDifTotal = (int)[NSSet setWithArray:yValues].count;
-    _yLabelSum = yLabelsDifTotal % 2 == 0 ? yLabelsDifTotal : yLabelsDifTotal + 1;
+    _yLabelSum = _yLabels.count - 1;// yLabelsDifTotal % 2 == 0 ? yLabelsDifTotal : yLabelsDifTotal + 1;
     
     if (_yMaxValue) {
         _yValueMax = _yMaxValue;
@@ -92,7 +92,7 @@
     
     if (_showLabel) {
         //Add y labels
-        _yLabelSum = _yLabels.count;
+        //_yLabelSum = _yLabels.count - 1;
         
         float yLabelSectionHeight = (self.frame.size.height - _chartMargin * 2 - kXLabelHeight) / _yLabelSum;
         
