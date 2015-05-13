@@ -49,6 +49,7 @@
 @property (nonatomic) BOOL showLabel;
 @property (nonatomic) BOOL showGenYLabels;
 @property (nonatomic) BOOL thousandsSeparator;
+@property (nonatomic, assign) NSInteger xLabelNumberOfLines;
 
 
 /**

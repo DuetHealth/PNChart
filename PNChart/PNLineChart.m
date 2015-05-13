@@ -198,6 +198,7 @@
             NSInteger y = _chartMargin + _chartCavanHeight;
 
             PNChartLabel *label = [[PNChartLabel alloc] initWithFrame:CGRectMake(x, y, (NSInteger)_xLabelWidth, (NSInteger)_chartMargin)];
+            label.numberOfLines = self.xLabelNumberOfLines;
             [label setTextAlignment:NSTextAlignmentCenter];
             label.text = labelText;
             [self setCustomStyleForXLabel:label];
