@@ -14,6 +14,8 @@
 @interface PNBarChart () {
     NSMutableArray *_xChartLabels;
     NSMutableArray *_yChartLabels;
+    NSMutableArray *_barLabels;
+    NSMutableArray *_aboveBarLabels;
 }
 
 - (UIColor *)barColorAtIndex:(NSUInteger)index;
@@ -54,6 +56,7 @@
     _xChartLabels        = [NSMutableArray array];
     _yChartLabels        = [NSMutableArray array];
     _bars                = [NSMutableArray array];
+    _aboveBarTexts       = [NSArray array];
     _xLabelSkip          = 1;
     _yLabelSum           = 4;
     _labelMarginTop      = 0;
@@ -157,7 +160,7 @@
                 //[label sizeToFit];
                 CGFloat labelXPosition;
                 if (_rotateForXAxisText){
-                    label.transform = CGAffineTransformMakeRotation(M_PI / 4);
+                    label.transform = CGAffineTransformMakeRotation(-M_PI / 4);
                     labelXPosition = (index *  _xLabelWidth + _chartMargin + _xLabelWidth /1.5);
                 }
                 else{
@@ -248,6 +251,28 @@
             grade = 0;
         }
         bar.grade = grade;
+        
+        // draw labels above bars if they exist
+        if (_aboveBarTexts.count > index) {
+            NSString* labelText = _aboveBarTexts[index];
+            PNChartLabel * label = [[PNChartLabel alloc] initWithFrame:CGRectMake(0, 0, _xLabelWidth, kXLabelHeight)];
+            label.font = _labelFont;
+            label.textColor = _labelTextColor;
+            [label setTextAlignment:NSTextAlignmentCenter];
+            label.text = labelText;
+            //[label sizeToFit];
+            CGFloat maxYFactor = 0.98;
+            CGFloat labelYFactor = MIN(maxYFactor, bar.grade);
+            CGFloat xPosition = bar.frame.origin.x + _barWidth / 2.0;
+            if (index == 0) {
+                xPosition += 8.0;
+            }
+            label.center = CGPointMake(xPosition,
+                                       (1.0 - labelYFactor) * bar.frame.size.height);
+            
+            [_aboveBarLabels addObject:label];
+            [self addSubview:label];
+        }
         
         index += 1;
     }
