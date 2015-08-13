@@ -15,8 +15,8 @@ Pod::Spec.new do |s|
   #  summary should be tweet-length, and the description more in depth.
   #
 
-  s.name         = "PNChart"
-  s.version      = "0.8.4"
+  s.name         = "DHKPNChart"
+  s.version      = "0.8.4.1"
   s.summary      = "A simple and beautiful chart lib with animation used in Piner for iOS"
 
   s.description  = <<-DESC

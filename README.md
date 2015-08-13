@@ -8,6 +8,10 @@ A simple and beautiful chart lib with **animation** used in [Piner](https://itun
 
 [![](https://dl.dropboxusercontent.com/u/1599662/pnchart.gif)](https://dl.dropboxusercontent.com/u/1599662/pnchart.gif)
 
+## Modifications
+
+Duet Health has modified this library to allow for tick marks and horizontal guidelines.
+
 ## Requirements
 
 PNChart works on iOS 6.0 and later version and is compatible with ARC projects. It depends on the following Apple frameworks, which should already be included with most Xcode templates:
